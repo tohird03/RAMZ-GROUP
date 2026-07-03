@@ -21,6 +21,7 @@ export interface IReturnedOrder {
   staff: ISeller,
   products: IReturnedOrderProducts[],
   totalPrice: number;
+  discount: number;
   payment: IReturnedOrderPayments;
 }
 
@@ -38,6 +39,7 @@ export interface IAddReturnedOrders {
   date: string,
   description?: string,
   products: IAddReturnedOrderProducts[];
+  discount?: number;
 }
 
 export interface IAddReturnedOrderProducts {
@@ -54,6 +56,7 @@ export interface IUpdateReturnedOrder {
   id: string,
   clientId?: string,
   description?: string,
+  discount?: number,
   payment?: IReturnedOrderPayments,
 }
 

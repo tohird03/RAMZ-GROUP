@@ -95,6 +95,7 @@ export const AddEditModal = observer(() => {
       send: ordersStore.isSendUser,
       clientId: form.getFieldValue('clientId'),
       date: form.getFieldValue('date'),
+      discount: form.getFieldValue('discount'),
     })
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ['getOrders'] });
@@ -177,6 +178,7 @@ export const AddEditModal = observer(() => {
       date: values?.date,
       send: false,
       products: [addProducts],
+      discount: values?.discount,
     };
 
     ordersApi.addNewOrder(createOrderData)
@@ -237,10 +239,6 @@ export const AddEditModal = observer(() => {
     setIsOpenProductSelect(true);
   };
 
-  const handleChagneCheckbox = (event: CheckboxChangeEvent) => {
-    ordersStore.setIsSendUser(event.target?.checked);
-  };
-
   const handleChangeProduct = (productId: string) => {
     const findProduct = productsData?.data?.data?.find(product => product?.id === productId);
 
@@ -273,6 +271,7 @@ export const AddEditModal = observer(() => {
         other: ordersStore.order?.payment?.other,
         date: dayjs(ordersStore.order?.date),
         clientId: ordersStore?.order?.client?.id,
+        discount: ordersStore?.order?.discount,
       });
 
     } else if (singleClientStore.activeClient?.id) {
@@ -766,10 +765,16 @@ export const AddEditModal = observer(() => {
           />
         </Form.Item>
         <Form.Item
-          name="sendUser"
+          label="Chegirma qiymati %"
+          name="discount"
           className={cn('form__row')}
+          initialValue={0}
         >
-          <Checkbox onChange={handleChagneCheckbox}>Mijozga bu sotuv haqida yuborilsinmi?</Checkbox>
+          <InputNumber
+            placeholder="Chegirma qiymatini kiriting"
+            style={{ width: '100%' }}
+            formatter={(value) => priceFormat(value!)}
+          />
         </Form.Item>
         <Button
           onClick={handleCreateOrUpdateOrder}

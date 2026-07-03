@@ -11,9 +11,11 @@ export interface IOrder {
   status: IOrderStatus;
   date: string;
   articl: number;
+  discount?: number;
 
   debt: number;
   totalPrice: number;
+  totalDiscountPrice: number;
   totalPayment: number;
 }
 
@@ -50,6 +52,7 @@ export interface IAddOrderProducts {
 export interface IAddOrderModalForm extends IAddOrderProducts {
   clientId: string;
   date: string;
+  discount: number;
 }
 
 export interface IAddOrder {
@@ -58,6 +61,7 @@ export interface IAddOrder {
   send: boolean;
   status?: IOrderStatus;
   products: IAddOrderProducts[];
+  discount: number;
 }
 
 export interface IUpdateOrder {
@@ -67,6 +71,7 @@ export interface IUpdateOrder {
   status?: IOrderStatus;
   send: boolean;
   payment?: IPaymentType;
+  discount?: number;
 }
 
 export interface IUploadOrderToExelParams extends IGetOrdersParams {

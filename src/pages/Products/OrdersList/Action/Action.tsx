@@ -4,7 +4,7 @@ import { DeleteOutlined, DownloadOutlined, EditOutlined, EyeOutlined, MoreOutlin
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button, Dropdown, Menu, Popconfirm, Tooltip } from 'antd';
 import { addNotification } from '@/utils';
-import { IOrder} from '@/api/order/types';
+import { IOrder } from '@/api/order/types';
 import { ordersStore } from '@/stores/products';
 import { ordersApi } from '@/api/order';
 import Item from 'antd/es/list/Item';
@@ -34,7 +34,7 @@ export const Action: FC<Props> = observer(({ orders }) => {
         queryClient.invalidateQueries({ queryKey: ['getOrders'] });
 
         if (clientId) {
-          singleClientStore.getSingleClient({id: clientId});
+          singleClientStore.getSingleClient({ id: clientId });
         }
       },
       onError: addNotification,
@@ -167,12 +167,9 @@ export const Action: FC<Props> = observer(({ orders }) => {
       <Dropdown placement="bottomRight" overlay={menuSaveOptions} trigger={['click']}>
         <Button icon={<DownloadOutlined />} />
       </Dropdown>
-      {!showEdit && (
-        <Dropdown placement="bottomRight" overlay={menuOrderOptions} trigger={['click']}>
-          <Button icon={<MoreOutlined />} />
-        </Dropdown>
-      )
-      }
+      <Dropdown placement="bottomRight" overlay={menuOrderOptions} trigger={['click']}>
+        <Button icon={<MoreOutlined />} />
+      </Dropdown>
     </div>
   );
 });

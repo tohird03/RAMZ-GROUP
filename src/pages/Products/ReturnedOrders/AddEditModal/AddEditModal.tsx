@@ -116,6 +116,7 @@ export const AddEditModal = observer(() => {
       clientId: values?.clientId,
       products: [addProducts],
       date: values?.date,
+      discount: values.discount ?? 0,
     };
 
     returnedOrderApi.addReturnedOrder(createReturnedOrderData)
@@ -133,6 +134,8 @@ export const AddEditModal = observer(() => {
   };
 
   const handleModalClose = () => {
+    setIsDiscountInitialized(false);
+
     returnedOrdersStore.setSingleReturnedOrder(null);
     returnedOrdersStore.setIsOpenAddEditReturnedOrderModal(false);
   };
@@ -395,16 +398,26 @@ export const AddEditModal = observer(() => {
     }))
   ), [clientsData]);
 
+  const [isDiscountInitialized, setIsDiscountInitialized] = useState(false);
+
   useEffect(() => {
+    if (
+      returnedOrdersStore.singleReturnedOrder &&
+      !isDiscountInitialized
+    ) {
+      form.setFieldsValue({
+        clientId: returnedOrdersStore.singleReturnedOrder.client.id,
+        date: dayjs(returnedOrdersStore.singleReturnedOrder.date),
+        discount: returnedOrdersStore.singleReturnedOrder.discount ?? 0,
+      });
+
+      setIsDiscountInitialized(true);
+    }
+
     if (returnedOrdersStore?.singleReturnedOrder) {
       setSearchClients(returnedOrdersStore?.singleReturnedOrder?.client?.phone);
-
-      form.setFieldsValue({
-        // sellingDate: dayjs(returnedOrdersStore?.singleReturnedOrder?.sellingDate),
-        clientId: returnedOrdersStore?.singleReturnedOrder?.client?.id,
-      });
     }
-  }, [returnedOrdersStore?.singleReturnedOrder]);
+  }, [returnedOrdersStore.singleReturnedOrder, isDiscountInitialized]);
 
   const rowClassName = (record: IOrderProducts) => {
     if (returnedOrdersStore?.singleReturnedOrder?.products) {
@@ -415,6 +428,18 @@ export const AddEditModal = observer(() => {
 
     return '';
   };
+
+  const totalPrice =
+    returnedOrdersStore.singleReturnedOrder?.products?.reduce(
+      (prev, current) => prev + current.price * current.count,
+      0
+    ) ?? 0;
+
+  const discount = Form.useWatch('discount', form) ?? 0;
+
+  const discountPrice = totalPrice * (Number(discount) / 100);
+
+  const finalPrice = totalPrice - discountPrice;
 
   return (
     <Modal
@@ -558,6 +583,26 @@ export const AddEditModal = observer(() => {
             formatter={(value) => priceFormat(value!)}
           />
         </Form.Item>
+        <Form.Item
+          label="Chegirma qiymati %"
+          name="discount"
+          className={cn('form__row')}
+          initialValue={0}
+        >
+          <InputNumber
+            placeholder="Chegirma qiymatini kiriting"
+            style={{ width: '100%' }}
+            formatter={(value) => priceFormat(value!)}
+            onChange={(value) => {
+              if (!returnedOrdersStore.singleReturnedOrder) return;
+
+              returnedOrdersStore.setSingleReturnedOrder({
+                ...returnedOrdersStore.singleReturnedOrder,
+                discount: Number(value ?? 0),
+              });
+            }}
+          />
+        </Form.Item>
         <Button
           onClick={handleCreateOrUpdateOrder}
           type="primary"
@@ -578,10 +623,23 @@ export const AddEditModal = observer(() => {
         rowClassName={rowClassName}
       />
 
-      <div>
-        <p style={{ textAlign: 'end', fontSize: '24px', fontWeight: 'bold' }}>Umumiy qiymati: {
-          priceFormat(returnedOrdersStore?.singleReturnedOrder?.products?.reduce((prev, current) => prev + (current?.price * current?.count), 0))
-        }
+      <div style={{ textAlign: 'end' }}>
+        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>
+          Umumiy narxi: {priceFormat(totalPrice)}
+        </p>
+
+        <p style={{ fontSize: '18px', color: '#faad14' }}>
+          Chegirma ({discount}%): -{priceFormat(discountPrice)}
+        </p>
+
+        <p
+          style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            color: '#52c41a',
+          }}
+        >
+          Yakuniy narx: {priceFormat(finalPrice)}
         </p>
       </div>
     </Modal>
