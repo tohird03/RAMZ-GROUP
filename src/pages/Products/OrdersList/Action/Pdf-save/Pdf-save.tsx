@@ -3,7 +3,7 @@ import { Document, Page, Text, View, StyleSheet, Font, Image, Path } from '@reac
 import { IOrder } from '@/api/order/types';
 import { priceFormat } from '@/utils/priceFormat';
 import { getFullDateFormat } from '@/utils/getDateFormat';
-import LogoImg from '@/assets/img/logo-all.png';
+import LogoImg from '@/assets/img/logo-ramz.jpg';
 import CheckmarkIcon from '@/assets/img/check-mark.png';
 import { phoneFormat } from '@/utils/phoneFormat';
 
@@ -136,8 +136,9 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
   },
   logoImage: {
-    width: 120,
-    height: 160,
+    maxWidth: 120,
+    maxHeight: 160,
+    marginTop: 35,
     marginRight: 40,
   },
   content: {
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   table: {
-    marginTop: -30,
+    marginTop: 20,
     width: '100%',
     borderWidth: 1,
     borderColor: 'black',
