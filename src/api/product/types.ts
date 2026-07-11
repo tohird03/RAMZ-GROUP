@@ -19,6 +19,7 @@ export interface IProducts {
   cost: number;
   // Sotuvda sotiladigan narxi
   price: number;
+  wholesalePrice: number;
   lastSellingDate: string;
 }
 
