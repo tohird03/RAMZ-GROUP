@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, Modal, Select, message} from 'antd';
+import { Button, Form, Input, InputNumber, Modal, Select, message } from 'antd';
 import { observer } from 'mobx-react';
 import { ordersStore } from '@/stores/products';
 import { priceFormat } from '@/utils/priceFormat';
@@ -18,7 +18,7 @@ export const PaymentModal = observer(() => {
   const [totalPrice, setTotalPrice] = useState(0);
   const { clientId } = useParams();
   const [loadingPayment, setLoadingPayment] = useState(false);
-  const {isCloseDay} = authStore;
+  const { isCloseDay } = authStore;
 
   const today = new Date().toISOString().split('T')[0];
   const checkDate = ordersStore.order?.date?.split('T')[0]?.split(' ')[0];
@@ -58,11 +58,12 @@ export const PaymentModal = observer(() => {
       send: ordersStore.isSendUser,
       clientId: form.getFieldValue('clientId'),
       payment: values,
+      discount: ordersStore.orderPayment?.discount ?? 0,
     })
       .then(() => {
         queryClient.invalidateQueries({ queryKey: ['getOrders'] });
         if (clientId) {
-          singleClientStore.getSingleClient({id: clientId});
+          singleClientStore.getSingleClient({ id: clientId });
         }
         handleModalClose();
       })
@@ -95,7 +96,7 @@ export const PaymentModal = observer(() => {
     }
 
     const rawTotal = ordersStore?.order?.products?.reduce((prev, current) => prev + (current?.price * current?.count), 0) || 0;
-    const discount = ordersStore?.order?.discount || 0;
+    const discount = ordersStore.orderPayment?.discount || 0;
     const discountedTotal = rawTotal - rawTotal * (Number(discount) / 100);
 
     setTotalPrice(discountedTotal);

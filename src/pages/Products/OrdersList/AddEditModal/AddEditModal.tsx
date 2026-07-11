@@ -80,6 +80,7 @@ export const AddEditModal = observer(() => {
         payment: ordersStore?.order?.payment,
         client: ordersStore?.order?.client,
         orderId: ordersStore?.order?.id,
+        discount: form.getFieldValue('discount'),
       });
       ordersStore.setIsOpenPaymentModal(true);
     }
@@ -790,10 +791,19 @@ export const AddEditModal = observer(() => {
             onChange={(value) => {
               if (!ordersStore.singleOrder) return;
 
+              const newDiscount = Number(value ?? 0);
+
               ordersStore.setSingleOrder({
                 ...ordersStore.singleOrder,
                 discount: Number(value ?? 0),
               });
+
+              if (ordersStore.order) {
+                ordersStore.setOrder({
+                  ...ordersStore.order,
+                  discount: newDiscount,
+                });
+              }
             }}
           />
         </Form.Item>

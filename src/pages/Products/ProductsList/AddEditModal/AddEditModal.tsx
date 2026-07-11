@@ -118,23 +118,34 @@ export const AddEditModal = observer(() => {
           />
         </Form.Item>
         <Form.Item
-          label="Sotish narxi"
-          rules={[{ required: true }]}
-          name="price"
-        >
-          <InputNumber
-            placeholder="Sotish narxi"
-            style={{ width: '100%' }}
-            formatter={(value) => priceFormat(value!)}
-          />
-        </Form.Item>
-        <Form.Item
           label="Sotib olingan narxi"
           rules={[{ required: true }]}
           name="cost"
         >
           <InputNumber
             placeholder="Sotib olingan narxi"
+            style={{ width: '100%' }}
+            formatter={(value) => priceFormat(value!)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Ulgurji narxi"
+          rules={[{ required: true }]}
+          name="wholesalePrice"
+        >
+          <InputNumber
+            placeholder="Sotib olingan narxi"
+            style={{ width: '100%' }}
+            formatter={(value) => priceFormat(value!)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Sotish narxi"
+          rules={[{ required: true }]}
+          name="price"
+        >
+          <InputNumber
+            placeholder="Sotish narxi"
             style={{ width: '100%' }}
             formatter={(value) => priceFormat(value!)}
           />

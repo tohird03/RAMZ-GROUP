@@ -4,5 +4,6 @@ import { IPayment } from "@/api/types";
 export interface IOrderPayment {
   client?: IClientsInfo;
   orderId: string;
+  discount: number;
   payment: IPayment | undefined;
 }

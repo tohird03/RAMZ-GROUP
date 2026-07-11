@@ -36,6 +36,13 @@ export const productsListColumn: ColumnType<IProducts>[] = [
     render: (value, record) => record?.cost,
   },
   {
+    key: 'cost',
+    dataIndex: 'cost',
+    title: 'Ulgurji narxi',
+    align: 'center',
+    render: (value, record) => record?.cost,
+  },
+  {
     key: 'selling_price',
     dataIndex: 'selling_price',
     title: 'Sotilish narxi',
