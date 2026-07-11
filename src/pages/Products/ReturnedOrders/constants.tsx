@@ -24,13 +24,6 @@ export const returnedOrdersColumns: ColumnType<IReturnedOrder>[] = [
     render: (value, record) => <ClientNameLink client={record?.client} />,
   },
   {
-    key: 'sum',
-    dataIndex: 'sum',
-    title: 'Jami narxi',
-    align: 'center',
-    render: (value, record) => priceFormat(record?.totalPrice),
-  },
-  {
     key: 'status',
     dataIndex: 'status',
     title: 'Qaytaruv holati',
@@ -42,6 +35,27 @@ export const returnedOrdersColumns: ColumnType<IReturnedOrder>[] = [
         {OrderStatus[record?.status!]}
       </Tag>
     ),
+  },
+  {
+    key: 'sum',
+    dataIndex: 'sum',
+    title: 'Jami narxi',
+    align: 'center',
+    render: (value, record) => priceFormat(record?.totalPrice),
+  },
+  {
+    key: 'discount',
+    dataIndex: 'discount',
+    title: 'Chegirma %',
+    align: 'center',
+    render: (value, record) => priceFormat(record?.discount),
+  },
+  {
+    key: 'discount',
+    dataIndex: 'discount',
+    title: 'Qaytuv qiymati',
+    align: 'center',
+    render: (value, record) => priceFormat(record?.totalDiscountPrice),
   },
   {
     key: 'fromClient',

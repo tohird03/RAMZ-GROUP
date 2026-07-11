@@ -22,6 +22,7 @@ export interface IReturnedOrder {
   products: IReturnedOrderProducts[],
   totalPrice: number;
   discount: number;
+  totalDiscountPrice: number;
   payment: IReturnedOrderPayments;
 }
 

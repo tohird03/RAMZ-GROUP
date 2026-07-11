@@ -148,6 +148,7 @@ export const AddEditModal = observer(() => {
         id: ordersStore?.order?.id,
         clientId: values?.clientId,
         send: false,
+        discount: values?.discount ?? ordersStore?.order?.discount,
       })
         .catch(addNotification);
 
@@ -571,6 +572,18 @@ export const AddEditModal = observer(() => {
     return '';
   };
 
+  const totalPrice =
+    ordersStore.order?.products?.reduce(
+      (prev, current) => prev + current.price * current.count,
+      0
+    ) ?? 0;
+
+  const discount = Form.useWatch('discount', form) ?? 0;
+
+  const discountPrice = totalPrice * (Number(discount) / 100);
+
+  const finalPrice = totalPrice - discountPrice;
+
   return (
     <Modal
       open={ordersStore.isOpenAddEditNewOrderModal}
@@ -600,7 +613,7 @@ export const AddEditModal = observer(() => {
             <Button
               type="primary"
               onClick={handleOpenPaymentModal}
-              style={{marginRight: '8px'}}
+              style={{ marginRight: '8px' }}
             >
               Mijoz to&lsquo;lovi
             </Button>
@@ -774,6 +787,14 @@ export const AddEditModal = observer(() => {
             placeholder="Chegirma qiymatini kiriting"
             style={{ width: '100%' }}
             formatter={(value) => priceFormat(value!)}
+            onChange={(value) => {
+              if (!ordersStore.singleOrder) return;
+
+              ordersStore.setSingleOrder({
+                ...ordersStore.singleOrder,
+                discount: Number(value ?? 0),
+              });
+            }}
           />
         </Form.Item>
         <Button
@@ -796,10 +817,23 @@ export const AddEditModal = observer(() => {
         rowClassName={rowClassName}
       />
 
-      <div>
-        <p style={{ textAlign: 'end', fontSize: '24px', fontWeight: 'bold' }}>Umumiy qiymati: {
-          priceFormat(ordersStore?.order?.products?.reduce((prev, current) => prev + (current?.price * current?.count), 0))
-        }
+      <div style={{ textAlign: 'end' }}>
+        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>
+          Umumiy narxi: {priceFormat(totalPrice)}
+        </p>
+
+        <p style={{ fontSize: '18px', color: '#faad14' }}>
+          Chegirma ({discount}%): -{priceFormat(discountPrice)}
+        </p>
+
+        <p
+          style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            color: '#52c41a',
+          }}
+        >
+          Yakuniy narx: {priceFormat(finalPrice)}
         </p>
       </div>
     </Modal>

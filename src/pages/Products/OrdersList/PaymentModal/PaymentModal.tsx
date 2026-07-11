@@ -94,9 +94,11 @@ export const PaymentModal = observer(() => {
       }
     }
 
-    const totalPriceCalc = ordersStore?.order?.products?.reduce((prev, current) => prev + (current?.price * current?.count), 0);
+    const rawTotal = ordersStore?.order?.products?.reduce((prev, current) => prev + (current?.price * current?.count), 0) || 0;
+    const discount = ordersStore?.order?.discount || 0;
+    const discountedTotal = rawTotal - rawTotal * (Number(discount) / 100);
 
-    setTotalPrice(totalPriceCalc || 0);
+    setTotalPrice(discountedTotal);
   }, [ordersStore.orderPayment, ordersStore?.order?.products]);
 
   const handleValuesChange = (changedValues: any, allValues: any) => {

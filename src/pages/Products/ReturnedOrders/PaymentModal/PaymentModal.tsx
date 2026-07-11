@@ -65,11 +65,14 @@ export const PaymentModal = observer(() => {
 
   useEffect(() => {
     if (returnedOrdersStore?.singleReturnedOrder) {
-      const totalPriceCalc = returnedOrdersStore.singleReturnedOrder?.products?.reduce((prev, curr) => prev + (curr?.price * curr?.count), 0);
+      const rawTotal = returnedOrdersStore.singleReturnedOrder?.products?.reduce((prev, curr) => prev + (curr?.price * curr?.count), 0) || 0;
+      const discount = returnedOrdersStore.singleReturnedOrder?.discount || 0;
+      const discountedTotal = rawTotal - rawTotal * (Number(discount) / 100);
 
-      setTotalPrice(totalPriceCalc);
+      setTotalPrice(discountedTotal);
+
       if (!returnedOrdersStore.singlePayment?.cash && !returnedOrdersStore.singlePayment?.fromBalance) {
-        form.setFieldValue('cash', totalPriceCalc);
+        form.setFieldValue('fromBalance', discountedTotal);
       }
     }
   }, [returnedOrdersStore?.singleReturnedOrder]);
