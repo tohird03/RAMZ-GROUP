@@ -20,7 +20,7 @@ import {
   IOrderStatus,
 } from '@/api/order/types';
 import Table, { ColumnType } from 'antd/es/table';
-import { OrderStatus, OrderStatusColor } from '../constants';
+import { OrderStatus, OrderStatusColor, PRICE_TYPE_OPTIONS } from '../constants';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useParams } from 'react-router-dom';
 import { IClientsInfo } from '@/api/clients';
@@ -52,6 +52,7 @@ export const AddEditModal = observer(() => {
   const changeCostRef = useRef<any>(null);
   const changeCountRef = useRef<any>(null);
   const [selectedClient, setSelectedClient] = useState<IClientsInfo | null>(null);
+  const [priceType, setPriceType] = useState<'selling' | 'wholesale'>('selling');
 
   // GET DATAS
   const { data: clientsData, isLoading: loadingClients } = useQuery({
@@ -244,8 +245,14 @@ export const AddEditModal = observer(() => {
   const handleChangeProduct = (productId: string) => {
     const findProduct = productsData?.data?.data?.find(product => product?.id === productId);
 
-    form.setFieldValue('price', findProduct?.price);
+    if (!findProduct) return;
 
+    form.setFieldValue(
+      'price',
+      priceType === 'selling'
+        ? findProduct.price
+        : findProduct.wholesalePrice
+    );
     setIsOpenProductSelect(false);
     countInputRef.current?.focus();
   };
@@ -763,6 +770,33 @@ export const AddEditModal = observer(() => {
             style={{ width: '100%' }}
             formatter={(value) => priceFormat(value!)}
             onKeyUp={handleChangePriceForm}
+            addonBefore={
+              <Select
+                style={{ width: '170px' }}
+                options={PRICE_TYPE_OPTIONS}
+                value={priceType}
+                onChange={(val) => {
+                  setPriceType(val);
+
+                  const productId = form.getFieldValue('productId');
+
+                  if (!productId) return;
+
+                  const product = productsData?.data?.data?.find(
+                    item => item.id === productId
+                  );
+
+                  if (!product) return;
+
+                  form.setFieldValue(
+                    'price',
+                    val === 'selling'
+                      ? product.price
+                      : product.wholesalePrice
+                  );
+                }}
+              />
+            }
           />
         </Form.Item>
         <Form.Item

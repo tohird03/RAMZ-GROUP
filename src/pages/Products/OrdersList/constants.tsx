@@ -257,6 +257,11 @@ export const ordersInfoPaymentColumns: ColumnType<IOrder>[] = [
   },
 ];
 
+export const PRICE_TYPE_OPTIONS = [
+  { label: 'Ulgurji narx', value: 'wholesale' },
+  { label: 'Sotish narxi', value: 'selling' },
+];
+
 export const ordersInfoProductsColumns: ColumnType<IOrderProducts>[] = [
   {
     key: 'index',
