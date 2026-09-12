@@ -20,10 +20,6 @@ export const Action: FC<Props> = observer(({ returnedOrder }) => {
 
   const { isCloseDay } = authStore;
 
-  const today = new Date().toISOString().split('T')[0];
-  const checkDate = returnedOrder?.date?.split('T')[0]?.split(' ')[0];
-  const isToday = checkDate === today && !isCloseDay;
-
   const { mutate: deleteReturnedOrder } =
     useMutation({
       mutationKey: ['deleteReturnedOrder'],
@@ -76,21 +72,17 @@ export const Action: FC<Props> = observer(({ returnedOrder }) => {
         icon={<DownloadOutlined />}
         loading={downloadLoading}
       />
-      {isToday &&
-        <>
-          <Button onClick={handleEditReturnedOrder} type="primary" icon={<EditOutlined />} />
-          <Popconfirm
-            title="Qaytuvni o'chirish"
-            description="Rostdan ham bu qaytuvni o'chirishni xohlaysizmi?"
-            onConfirm={handleDelete}
-            okText="Ha"
-            okButtonProps={{ style: { background: 'red' } }}
-            cancelText="Yo'q"
-          >
-            <Button type="primary" icon={<DeleteOutlined />} danger />
-          </Popconfirm>
-        </>
-      }
+      <Button onClick={handleEditReturnedOrder} type="primary" icon={<EditOutlined />} />
+      <Popconfirm
+        title="Qaytuvni o'chirish"
+        description="Rostdan ham bu qaytuvni o'chirishni xohlaysizmi?"
+        onConfirm={handleDelete}
+        okText="Ha"
+        okButtonProps={{ style: { background: 'red' } }}
+        cancelText="Yo'q"
+      >
+        <Button type="primary" icon={<DeleteOutlined />} danger />
+      </Popconfirm>
     </div>
   );
 });

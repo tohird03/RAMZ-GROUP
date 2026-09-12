@@ -53,6 +53,11 @@ class AuthStore {
         addNotification(err);
       });
 
+  getCurrencyMany = () =>
+    authApi.getCurrencyMany()
+      .then(res => res?.data)
+      .catch(addNotification);
+
   setMainMenuItems = (menuItems: MenuProps['items'] | null) => {
     this.mainMenuItems = menuItems;
   };

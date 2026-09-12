@@ -20,10 +20,6 @@ export const PaymentModal = observer(() => {
   const [loadingPayment, setLoadingPayment] = useState(false);
   const { isCloseDay } = authStore;
 
-  const today = new Date().toISOString().split('T')[0];
-  const checkDate = ordersStore.order?.date?.split('T')[0]?.split(' ')[0];
-  const isToday = checkDate === today && !isCloseDay;
-
   const handleModalClose = () => {
     if (clientId) {
       singleClientStore.getSingleClient({
@@ -44,13 +40,6 @@ export const PaymentModal = observer(() => {
   };
 
   const handleSubmitPayment = (values: IPaymentType) => {
-
-    if (!isToday) {
-      message.info('Oldingi to\'lovni o\'zgartirolmaysiz!');
-
-      return;
-    }
-
     setLoadingPayment(true);
 
     ordersApi.updateOrder({
@@ -156,7 +145,6 @@ export const PaymentModal = observer(() => {
         <Button
           onClick={handleSavePayment}
           type="primary"
-          disabled={!isToday}
           loading={loadingPayment}
         >
           Maqullash

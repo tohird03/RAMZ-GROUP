@@ -25,6 +25,8 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useParams } from 'react-router-dom';
 import { IClientsInfo } from '@/api/clients';
 import { getFullDateFormat } from '@/utils/getDateFormat';
+import { currencyStore } from '@/stores/workers';
+import { authStore } from '@/stores/auth';
 
 const cn = classNames.bind(styles);
 
@@ -73,6 +75,11 @@ export const AddEditModal = observer(() => {
         pageSize: 15,
         search: searchProducts!,
       }),
+  });
+
+  const { data: currencyMany } = useQuery({
+    queryKey: ['getCurrency'],
+    queryFn: () => authStore.getCurrencyMany(),
   });
 
   const handleOpenPaymentModal = () => {
@@ -586,11 +593,20 @@ export const AddEditModal = observer(() => {
       0
     ) ?? 0;
 
+  // PRICE
   const discount = Form.useWatch('discount', form) ?? 0;
 
   const discountPrice = totalPrice * (Number(discount) / 100);
 
   const finalPrice = totalPrice - discountPrice;
+
+  const currencyUsd = currencyMany?.data?.find(
+    currency => currency?.symbol === 'USD'
+  );
+
+  const usdRate = Number(currencyUsd?.exchangeRate ?? 0);
+
+  const finalPriceUzs = finalPrice * usdRate;
 
   return (
     <Modal
@@ -877,7 +893,15 @@ export const AddEditModal = observer(() => {
             color: '#52c41a',
           }}
         >
-          Yakuniy narx: {priceFormat(finalPrice)}
+          Yakuniy narx:
+          <div>
+            {priceFormat(finalPrice)}
+            <Tag color="green">usd</Tag>
+          </div>
+          <div>
+            {priceFormat(finalPriceUzs)}
+            <Tag color="blue">uzs</Tag>
+          </div>
         </p>
       </div>
     </Modal>

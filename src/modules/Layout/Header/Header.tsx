@@ -4,11 +4,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Dropdown, Layout as AntdLayout, MenuProps, Typography } from 'antd';
+import { Avatar, Button, Dropdown, Layout as AntdLayout, MenuProps, Typography, Tag } from 'antd';
 import { ROUTES } from '@/constants';
 import { useStores } from '@/stores';
 import { LogOut } from '../LogOut/LogOut';
 import { CloseDay } from '../CloseDay';
+import { useQuery } from '@tanstack/react-query';
+import { priceFormat } from '@/utils/priceFormat';
 
 type Props = {
   collapsed: boolean;
@@ -18,6 +20,12 @@ type Props = {
 
 export const Header = observer(({ collapsed, onCollapsedClick, isMobile }: Props) => {
   const { authStore } = useStores();
+
+  const { data: currencyMany, isLoading: loadingClients } = useQuery({
+    queryKey: ['getCurrencyMany'],
+    queryFn: () =>
+      authStore.getCurrencyMany(),
+  });
 
   const items: MenuProps['items'] = [
     ...(isMobile
@@ -44,6 +52,8 @@ export const Header = observer(({ collapsed, onCollapsedClick, isMobile }: Props
     },
   ];
 
+  const currencyUsd = currencyMany?.data?.find(currency => currency?.symbol === 'USD');
+
   return (
     <AntdLayout.Header className={`header header__isclose-${authStore?.isCloseDay}`}>
       <div className="header__left">
@@ -60,6 +70,7 @@ export const Header = observer(({ collapsed, onCollapsedClick, isMobile }: Props
         }
 
         <div className="header__profile">
+          <Tag color="#0000FF">{priceFormat(currencyUsd?.exchangeRate)}</Tag>
           {!isMobile && (
             <>
               <Typography.Title level={5} style={{ color: 'white', margin: '0' }}>

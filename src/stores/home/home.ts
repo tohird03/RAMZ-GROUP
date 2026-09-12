@@ -13,6 +13,11 @@ class HomeStore {
       .then(res => res?.data)
       .catch(addNotification);
 
+  getOrdersProfitStatistic = () =>
+    statisticApi.getOrdersProfitStatistic()
+      .then(res => res?.data)
+      .catch(addNotification);
+
   getOrdersGraphStatistic = (params: IOrderGraphStatisticType) =>
     statisticApi.getOrdersGraphStatistic(params)
       .then(res => res?.data)

@@ -24,7 +24,7 @@ export const mainMenuList: IMenuItems[] = [
     children: [
       {
         label: <><AppstoreAddOutlined /> Statistika</>,
-        key: ROUTES.home,
+        key: ROUTES.productsOrder,
         roleKey: EPageAccess.STAT,
       },
     ],
@@ -41,7 +41,7 @@ export const mainMenuList: IMenuItems[] = [
       },
       {
         label: <><ShoppingCartOutlined /> Sotuvlar ro&apos;yxati</>,
-        key: ROUTES.productsOrder,
+        key: ROUTES.home,
         roleKey: EPageAccess.SELLING,
       },
       {
@@ -108,6 +108,11 @@ export const mainMenuList: IMenuItems[] = [
       {
         label: <><SolutionOutlined /> Xodimlar hisoboti</>,
         key: ROUTES.workersStaffsPayments,
+        roleKey: EPageAccess.STUFFPAYMENT,
+      },
+      {
+        label: <><SolutionOutlined /> Valyuta</>,
+        key: ROUTES.workersCurrency,
         roleKey: EPageAccess.STUFFPAYMENT,
       },
     ],

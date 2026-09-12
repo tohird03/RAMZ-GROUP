@@ -4,6 +4,9 @@ export const stage = process.env.REACT_APP_STAGE || 'dev';
 export enum Endpoints {
   Base = '',
   CloseDay = '/common/day-close',
+  CurrencyDefaultChange = '/common/staff/currency',
+  CurrencyManyGet = '/currency/many',
+  CurrencyOne = '/currency/one',
 
   // SETTINGS
   SignIn = '/auth/sign-in',
@@ -52,6 +55,7 @@ export enum Endpoints {
   ProductMv = '/product-mv/one',
 
   OrderStatistic = '/selling/total-stats',
+  OrderProfitStatistic = '/selling/profit-stats',
   OrderGraphStatistic = '/selling/period-stats',
 
   OrderAllExcel = '/selling/excel-download/many',

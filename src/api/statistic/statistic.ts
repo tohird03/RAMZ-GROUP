@@ -21,6 +21,9 @@ class StatisticApi extends Instance {
   getOrdersStatistic = (): Promise<{data: IOrderStatistic}> =>
     this.get(Endpoints.OrderStatistic);
 
+  getOrdersProfitStatistic = (): Promise<{data: IOrderStatistic}> =>
+    this.get(Endpoints.OrderProfitStatistic);
+
   getOrdersGraphStatistic = (type: IOrderGraphStatisticType): Promise<{data: IOrderGraphStatistic[]}> =>
     this.get(Endpoints.OrderGraphStatistic, {params: {type}});
 }

@@ -38,6 +38,11 @@ export const Statistic = observer(() => {
     queryFn: () => homeStore.getOrdersStatistic(),
   });
 
+  const { data: ordersProfitStatisticData } = useQuery({
+    queryKey: ['getOrdersProfitStatistic'],
+    queryFn: () => homeStore.getOrdersProfitStatistic(),
+  });
+
   const { data: ordersGraphStatisticData, isLoading: loadingGraph } = useQuery({
     queryKey: ['getOrdersGraphStatistic', timeRange],
     queryFn: () => homeStore.getOrdersGraphStatistic(timeRange),
@@ -130,19 +135,19 @@ export const Statistic = observer(() => {
   }, []);
 
   const handleClickTodayOrder = () => {
-    navigate(ROUTES.productsOrder);
+    navigate(ROUTES.home);
   };
 
   const handleClickTodayWeek = () => {
     ordersStore.setStartDate(getStartAndEndDate(7)?.startDate);
     ordersStore.setEndDate(getStartAndEndDate(7)?.endDate);
-    navigate(ROUTES.productsOrder);
+    navigate(ROUTES.home);
   };
 
   const handleClickMonth = () => {
     ordersStore.setStartDate(getStartMonthEndDate()?.startDate);
     ordersStore.setEndDate(getStartMonthEndDate()?.endDate);
-    navigate(ROUTES.productsOrder);
+    navigate(ROUTES.home);
   };
 
   const handleClickClient = () => {
@@ -223,6 +228,41 @@ export const Statistic = observer(() => {
               </div>
             </div>
           </Card>
+        </div>
+      </div>
+      <div className={cn('statistic__top-wrapper-profit')}>
+        <div className={cn('statistic__top-order')}>
+          <h3 className={cn('statistic__top-heading')}>PROFIT</h3>
+          <div className={cn('statistic__top-order-card-profit')}>
+            <Card onClick={handleClickTodayOrder} className={cn('statistic__top-card')}>
+              <CalendarOutlined style={{ fontSize: '40px', color: '#f18024', marginBottom: 5 }} />
+              <p className={cn('statistic__top-card-info')}>Bugun</p>
+              <p className={cn('statistic__top-card-value')}>
+                {formatter(ordersProfitStatisticData?.daily || 0)}
+              </p>
+            </Card>
+            <Card onClick={handleClickTodayWeek} className={cn('statistic__top-card')}>
+              <CalendarOutlined style={{ fontSize: '40px', color: '#f18024', marginBottom: 5 }} />
+              <p className={cn('statistic__top-card-info')}>Hafta</p>
+              <p className={cn('statistic__top-card-value')}>
+                {formatter(ordersProfitStatisticData?.weekly || 0)}
+              </p>
+            </Card>
+            <Card onClick={handleClickMonth} className={cn('statistic__top-card')}>
+              <CalendarOutlined style={{ fontSize: '40px', color: '#f18024', marginBottom: 5 }} />
+              <p className={cn('statistic__top-card-info')}>Oy</p>
+              <p className={cn('statistic__top-card-value')}>
+                {formatter(ordersProfitStatisticData?.monthly || 0)}
+              </p>
+            </Card>
+            <Card onClick={handleClickMonth} className={cn('statistic__top-card')}>
+              <CalendarOutlined style={{ fontSize: '40px', color: '#f18024', marginBottom: 5 }} />
+              <p className={cn('statistic__top-card-info')}>Yil</p>
+              <p className={cn('statistic__top-card-value')}>
+                {formatter(ordersProfitStatisticData?.yearly || 0)}
+              </p>
+            </Card>
+          </div>
         </div>
       </div>
       <Card>

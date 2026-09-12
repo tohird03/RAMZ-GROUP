@@ -11,6 +11,15 @@ $small: 500px;
       grid-template-columns: auto;
     }
   }
+  &__top-wrapper-profit {
+    display: grid;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 3%;
+    @media screen and (max-width: $small) {
+      grid-template-columns: auto;
+    }
+  }
   &__top-heading {
     margin-bottom: 15px;
   }
@@ -24,6 +33,14 @@ $small: 500px;
   &__top-order-card {
     display: grid;
     grid-template-columns: auto auto auto;
+    gap: 20px;
+    @media screen and (max-width: $small) {
+      grid-template-columns: auto;
+    }
+  }
+  &__top-order-card-profit {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
     gap: 20px;
     @media screen and (max-width: $small) {
       grid-template-columns: auto;

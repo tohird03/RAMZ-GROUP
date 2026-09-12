@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { IStaff } from '@/stores/profile/types';
 import { Endpoints, umsStages } from '../endpoints';
 import { INetworkConfig, Instance } from '../instance';
-import { ILoginForm, ILoginResponse } from './types';
+import { ICurrency, IEditCurrency, ILoginForm, ILoginResponse } from './types';
 import { IResponse } from '../types';
 
 const config: INetworkConfig = {
@@ -27,8 +27,17 @@ class AuthApi extends Instance {
   closeDay = (): Promise<AxiosResponse<any>> =>
     this.post(Endpoints.CloseDay);
 
-  getCloseDay = (): Promise<{data: {isClosed: boolean}}> =>
+  getCloseDay = (): Promise<{ data: { isClosed: boolean } }> =>
     this.get(Endpoints.CloseDay, { params: { closedDate: '2025-12-03T07:05:25.912Z' } });
+
+  getCurrencyMany = (): Promise<IResponse<ICurrency[]>> =>
+    this.get(Endpoints.CurrencyManyGet);
+
+  currencyDefaultChange = (currencyId: string): Promise<AxiosResponse<any>> =>
+    this.patch(Endpoints.CurrencyDefaultChange, { currencyId });
+
+  currencyEdit = (params: IEditCurrency): Promise<AxiosResponse<any>> =>
+    this.patch(Endpoints.CurrencyOne, params, { params: { id: params?.id } });
 }
 
 export const authApi = new AuthApi(config);
